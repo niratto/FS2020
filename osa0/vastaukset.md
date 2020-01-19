@@ -12,12 +12,12 @@ Check!
 
 # 0.4 NEW NOTE
 
-todo...
+![Tehtävä 0.4](./Test_0_4.png)
 
 # 0.5 SPA
 
-todo...
+![Tehtävä 0.5](./Test_0_5.png)
 
 # 0.6 SPA - NEW NOTE
 
-todo...
+![Tehtävä 0.5](./Test_0_6.png)
