@@ -3,6 +3,30 @@ import ReactDOM from 'react-dom'
 
 const Display = ({ text, counter }) => <div>{text} {counter}</div>
 
+const DisplayStats = ({good, bad, neutral}) => {
+    let total = good + bad + neutral
+    let dividend = good - bad
+    let average = (good -bad)/total
+    let percGood = (good/total)*100
+
+    if (average !== average) {
+        average = 0
+    }
+    if (percGood !== percGood) {
+        percGood = 0
+    }
+    
+    return (
+        <div>
+            All: {total}
+            <br />
+            Average: {average}
+            <br />
+            Positive: {percGood} %
+        </div>
+    )
+    }
+
 const Button = ({ handleClick, text }) => (
     <button onClick={handleClick}>
         {text}
@@ -41,6 +65,7 @@ const App = () => {
             <Display text="Good: " counter={good} />
             <Display text="Neutral: " counter={neutral} />
             <Display text="Bad: " counter={bad} />
+            <DisplayStats good={good} bad={bad} neutral={neutral} />
         </div>
     )
 }
