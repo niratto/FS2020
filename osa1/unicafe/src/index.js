@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Display = ({ text, data }) => <div>{text} {data}</div>
+const Display = ({ text, data }) => {
+    return (
+        <React.Fragment>
+            <tr><td>{text}</td><td>{data}</td></tr>
+        </React.Fragment>
+    )
+}
 
 const DisplayStats = ({ good, bad, neutral }) => {
     let total = good + bad + neutral
@@ -17,22 +23,24 @@ const DisplayStats = ({ good, bad, neutral }) => {
     percGood += " %"
 
     if (total > 0)
-    return (
-        <>
-            <Display text="Good: " data={good} />
-            <Display text="Neutral: " data={neutral} />
-            <Display text="Bad: " data={bad} />
-            <Display text="All: " data={total} />
-            <Display text="Average: " data={average} />
-            <Display text="% Positive: " data={percGood} />
-        </>
-    )
+        return (
+            <table>
+                <tbody>
+                <Display text="Good" data={good} />
+                <Display text="Neutral" data={neutral} />
+                <Display text="Bad" data={bad} />
+                <Display text="All" data={total} />
+                <Display text="Average" data={average} />
+                <Display text="% Positive" data={percGood} />
+                </tbody>
+            </table>
+        )
     else
-    return (
-        <>
-        <p>No feedback given</p>
-        </>
-    )
+        return (
+            <>
+                <p>No feedback given</p>
+            </>
+        )
 }
 
 const Button = ({ handleClick, text }) => (
