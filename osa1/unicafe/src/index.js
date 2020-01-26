@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Display = ({ text, counter }) => <div>{text} {counter}</div>
+const Display = ({ text, data }) => <div>{text} {data}</div>
 
-const DisplayStats = ({good, bad, neutral}) => {
+const DisplayStats = ({ good, bad, neutral }) => {
     let total = good + bad + neutral
-    let dividend = good - bad
-    let average = (good -bad)/total
-    let percGood = (good/total)*100
+    let average = (good - bad) / total
+    let percGood = (good / total) * 100
 
     if (average !== average) {
         average = 0
@@ -15,17 +14,26 @@ const DisplayStats = ({good, bad, neutral}) => {
     if (percGood !== percGood) {
         percGood = 0
     }
-    
+    percGood += " %"
+
+    if (total > 0)
     return (
-        <div>
-            All: {total}
-            <br />
-            Average: {average}
-            <br />
-            Positive: {percGood} %
-        </div>
+        <>
+            <Display text="Good: " data={good} />
+            <Display text="Neutral: " data={neutral} />
+            <Display text="Bad: " data={bad} />
+            <Display text="All: " data={total} />
+            <Display text="Average: " data={average} />
+            <Display text="% Positive: " data={percGood} />
+        </>
     )
-    }
+    else
+    return (
+        <>
+        <p>No feedback given</p>
+        </>
+    )
+}
 
 const Button = ({ handleClick, text }) => (
     <button onClick={handleClick}>
@@ -34,7 +42,7 @@ const Button = ({ handleClick, text }) => (
 )
 
 const Header = () => <h1>Give Feedback</h1>
-const Statistics = () => <h1>Statistics</h1>
+const StatisticsHeader = () => <h1>Statistics</h1>
 
 const App = () => {
     // tallenna napit omaan tilaansa
@@ -61,10 +69,7 @@ const App = () => {
                 handleClick={increaseBadByOne}
                 text='bad'
             />
-            <Statistics />
-            <Display text="Good: " counter={good} />
-            <Display text="Neutral: " counter={neutral} />
-            <Display text="Bad: " counter={bad} />
+            <StatisticsHeader />
             <DisplayStats good={good} bad={bad} neutral={neutral} />
         </div>
     )
