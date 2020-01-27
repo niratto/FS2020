@@ -1,25 +1,43 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const points = {}
-
 const Button = ({ handleClick, text }) => (
     <button onClick={handleClick}>
         {text}
     </button>
 )
 
+const ShowVotes = (props) => {
+    let maxVal = -1
+    let maxKey = -1
+    for (let i=0; i<6; i++) {
+        if (props.votes[i] > maxVal) {
+            maxVal = props.votes[i]
+            maxKey = i
+        }
+    }
+
+    if (maxKey >= 0)
+    return ( <div>
+    {props.anecdotes[maxKey]}
+    <br />
+        Has {maxVal} votes
+    </div>
+    )
+    
+    
+    
+    return (null)
+}
+
 const App = (props) => {
     let maxVal = Object.values(props.anecdotes).length
     const [selected, setSelected] = useState(0)
-    const [vote, setVote] = useState({
-            0:0,
-            1:0,
-            2:0,
-            3:0,
-            4:0,
-            5:0
-    })
+    const [vote, setVote] = useState({})
+    let voteCount = vote[selected]
+
+    if (isNaN(voteCount))
+        voteCount = 0
 
     const anecdoteIndex = () => setSelected(
         function getRandomArbitrary(min, max) {
@@ -27,21 +45,21 @@ const App = (props) => {
         }
     )
 
-    const voter = e  => {
+    const voter = e => {
         setVote({
             ...vote,
 
-            [selected] : vote[selected] + 1
+            [selected]: voteCount + 1
         })
     }
 
     console.log(selected, vote)
-    
+
 
     return (
         <div>
             {props.anecdotes[selected]}
-            <div>Has {vote[selected]} votes</div>
+            <div>Has {voteCount} votes</div>
             <div>
                 <button onClick={voter}>Vote</button>
                 < Button
@@ -49,6 +67,8 @@ const App = (props) => {
                     text='seuraava sutkautus'
                 />
             </div>
+            <br />
+            <ShowVotes votes={vote} anecdotes={anecdotes} />
         </div>
     )
 }
