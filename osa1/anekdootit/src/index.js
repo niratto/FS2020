@@ -12,9 +12,14 @@ const Button = ({ handleClick, text }) => (
 const App = (props) => {
     let maxVal = Object.values(props.anecdotes).length
     const [selected, setSelected] = useState(0)
-    const [vote, setVote] = useState(0)
-
-    const votesArr = [0, 0, 0, 0, 0, 0]
+    const [vote, setVote] = useState({
+            0:0,
+            1:0,
+            2:0,
+            3:0,
+            4:0,
+            5:0
+    })
 
     const anecdoteIndex = () => setSelected(
         function getRandomArbitrary(min, max) {
@@ -22,18 +27,26 @@ const App = (props) => {
         }
     )
 
-    const voter = () => {
-        console.log("test vote!")
+    const voter = e  => {
+        setVote({
+            ...vote,
+
+            [selected] : vote[selected] + 1
+        })
     }
+
+    console.log(selected, vote)
+    
 
     return (
         <div>
             {props.anecdotes[selected]}
+            <div>Has {vote[selected]} votes</div>
             <div>
                 <button onClick={voter}>Vote</button>
                 < Button
                     handleClick={anecdoteIndex}
-                    text='sutkautus'
+                    text='seuraava sutkautus'
                 />
             </div>
         </div>
