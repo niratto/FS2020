@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 
+
 const contacts = [
     { name: 'test', number: '040-123456' },
     { name: 'Arto Hellas', number: '040-123456' },

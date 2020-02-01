@@ -1,14 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Search from './components/Search'
 import AddContact from './components/AddContact'
 import ShowContacts from './components/ShowContacts'
+import axios from 'axios'
 
 const App = (props) => {
-  const [contacts, setNumber] = useState(props.contacts)
+  const [contacts, setNumber] = useState([])
   const [newName, setnewName] = useState('')
   const [newNumber, setnewNumber] = useState('')
   const [newSearch, setnewSearch] = useState('')
   const [showAll, setShowAll] = useState(true)
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setNumber(response.data)
+      })
+  }, [])
+  console.log('render', contacts.length, 'notes')
 
   const addNumber = (event) => {
     event.preventDefault()
