@@ -2,7 +2,6 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => {
-  console.log("YEAH:", axios.get(baseUrl))
   return axios.get(baseUrl)
 }
 
@@ -18,9 +17,8 @@ const update = (id, newObject) => {
 
 const remove = (id, contact) => {
   let result = window.confirm("Are you really sure you want to delete '" + contact.name + "'\n...with really old-school CGI-kinda way?!?!?!?!");
-  if (result == true) {
-    const request = axios.delete(`${baseUrl}/${id}`)
-    window.location.reload();
+  if (result === true) {
+    axios.delete(`${baseUrl}/${id}`)
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-
+import './index.css'
 
 const contacts = [
     { name: 'test', number: '040-123456' },

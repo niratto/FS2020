@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Search from './components/Search'
 import AddContact from './components/AddContact'
 import ShowContacts from './components/ShowContacts'
+import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
+import DeleteNotification from './components/DeleteNotification'
 import contactService from './services/contacts'
 
 const App = (props) => {
@@ -10,11 +13,20 @@ const App = (props) => {
   const [newNumber, setnewNumber] = useState('')
   const [newSearch, setnewSearch] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [errorNotification, setErrorNotification] = useState(null)
+  const [notification, setNotification] = useState(null)
+  const [deleteNotification, setDeleteNotification] = useState(null)
+  const timeout = 3000
 
-  const deleteContact = (id,contacts) => {  
+  const deleteContact = (id, contacts) => {
     contactService
-      .remove(id,contacts)
+      .remove(id, contacts)
 
+      setDeleteNotification(contacts.name + " deleteth from the phonebook of terror")
+      setTimeout(() => {
+        setDeleteNotification(null)
+        window.location.reload(); // really sorry about this... I am a retard. :(
+      }, timeout)
     console.log("After DELETE: ", id, contacts)
   }
 
@@ -26,7 +38,7 @@ const App = (props) => {
         setContact(response.data)
       })
   }, [])
-  
+
   const addNumber = (event) => {
     event.preventDefault()
     const numObject = {
@@ -39,14 +51,20 @@ const App = (props) => {
     let emptyContactGiven = false
     contacts.map(function (number) {
       if (number.name === newName) {
-        alert(newName + " is already added to phonebook")
+        setErrorNotification(newName + " is already added to phonebook")
+        setTimeout(() => {
+          setErrorNotification(null)
+        }, timeout)
         duplicateContactFound = true
       }
       return (null)
     })
 
     if (newName.length < 1) {
-      alert("Can't add empty contact!")
+      setErrorNotification("Can't add empty contact!")
+          setTimeout(() => {
+            setErrorNotification(null)
+          }, timeout)
       emptyContactGiven = true
     }
 
@@ -55,13 +73,16 @@ const App = (props) => {
       contactService
         .create(numObject)
         .then(response => {
-          console.log("numObject",numObject)
+          console.log("numObject", numObject)
           setContact(contacts.concat(response))
           setnewName('')
           setnewNumber('')
+          setShowAll(true)
+          setNotification(newName + " addeth to the phonebook of terror")
+          setTimeout(() => {
+            setNotification(null)
+          }, timeout)
         })
-
-        setShowAll(true)
     }
 
 
@@ -87,12 +108,18 @@ const App = (props) => {
 
   return (
     <div>
+      <ErrorNotification message={errorNotification} />
+      <Notification message={notification} />
+      <DeleteNotification message={deleteNotification} />
+      <h2>Phonebook</h2>
       <Search handleSearchChange={handleSearchChange} />
+      <h2>Add a New Contact</h2>
       <AddContact addNumber={addNumber}
         newName={newName}
         handleNameChange={handleNameChange}
         newNumber={newNumber}
         handleNumberChange={handleNumberChange} />
+      <h2>Contacts</h2>
       <ShowContacts contactsToShow={contactsToShow}
         deleteContact={deleteContact}
       />

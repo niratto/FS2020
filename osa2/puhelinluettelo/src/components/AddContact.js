@@ -4,7 +4,6 @@ const AddContact = ({addNumber,newName,handleNameChange,newNumber,handleNumberCh
 
   return (
     <>
-    <h2>Add a New Contact</h2>
     <form onSubmit={addNumber}>
       <div>
         name: <input
