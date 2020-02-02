@@ -1,35 +1,19 @@
 {
-  "persons":[
-    { 
-      "name": "Arto Hellas", 
+  "persons": [
+    {
+      "name": "Arto Hellas",
       "number": "040-123456",
       "id": 1
     },
-    { 
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523",
+    {
+      "name": "Je",
+      "number": "123",
       "id": 2
     },
-    { 
-      "name": "Dan Abramov", 
-      "number": "12-43-234345",
+    {
+      "name": "weqewq",
+      "number": "213123",
       "id": 3
-    },
-    { 
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    { 
-      "name": "Test", 
-      "number": "12345",
-      "id": 5   
-    },
-    { 
-        "name": "Pentti Slayer", 
-        "number": "555-666",
-        "id": 5   
-      }
-  
+    }
   ]
 }

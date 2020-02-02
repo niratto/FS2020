@@ -2,26 +2,31 @@ import React, { useState, useEffect } from 'react'
 import Search from './components/Search'
 import AddContact from './components/AddContact'
 import ShowContacts from './components/ShowContacts'
-import axios from 'axios'
+import contactService from './services/contacts'
 
 const App = (props) => {
-  const [contacts, setNumber] = useState([])
+  const [contacts, setContact] = useState([])
   const [newName, setnewName] = useState('')
   const [newNumber, setnewNumber] = useState('')
   const [newSearch, setnewSearch] = useState('')
   const [showAll, setShowAll] = useState(true)
 
+  const deleteContact = (id,contacts) => {  
+    contactService
+      .remove(id,contacts)
+
+    console.log("After DELETE: ", id, contacts)
+  }
+
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    console.log("hookedi hook")
+    contactService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
-        setNumber(response.data)
+        setContact(response.data)
       })
   }, [])
-  console.log('render', contacts.length, 'notes')
-
+  
   const addNumber = (event) => {
     event.preventDefault()
     const numObject = {
@@ -29,21 +34,38 @@ const App = (props) => {
       number: newNumber
     }
 
-    let noNameFound = false
+    // Check for duplicates
+    let duplicateContactFound = false
+    let emptyContactGiven = false
     contacts.map(function (number) {
       if (number.name === newName) {
         alert(newName + " is already added to phonebook")
-        noNameFound = true
+        duplicateContactFound = true
       }
-      return(null)
+      return (null)
     })
 
-    if (!noNameFound)
-      setNumber(contacts.concat(numObject))
-    
-    setShowAll(true)
-    setnewName('')
-    setnewNumber('')
+    if (newName.length < 1) {
+      alert("Can't add empty contact!")
+      emptyContactGiven = true
+    }
+
+    // if no duplicates... concate new note to contacts
+    if (!duplicateContactFound && !emptyContactGiven) {
+      contactService
+        .create(numObject)
+        .then(response => {
+          console.log("numObject",numObject)
+          setContact(contacts.concat(response))
+          setnewName('')
+          setnewNumber('')
+        })
+
+        setShowAll(true)
+    }
+
+
+
   }
 
   const handleNameChange = (event) => {
@@ -58,7 +80,7 @@ const App = (props) => {
     setnewSearch(event.target.value)
     setShowAll(false)
   }
-  console.log("showAll",showAll)
+  console.log("showAll", showAll)
   const contactsToShow = showAll
     ? contacts
     : contacts.filter(contacts => contacts.name.includes(newSearch))
@@ -67,11 +89,13 @@ const App = (props) => {
     <div>
       <Search handleSearchChange={handleSearchChange} />
       <AddContact addNumber={addNumber}
-                  newName={newName}
-                  handleNameChange={handleNameChange}
-                  newNumber={newNumber}
-                  handleNumberChange={handleNumberChange}/>
-      <ShowContacts contactsToShow={contactsToShow} />
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange} />
+      <ShowContacts contactsToShow={contactsToShow}
+        deleteContact={deleteContact}
+      />
     </div>
   )
 
