@@ -20,13 +20,8 @@ const App = (props) => {
 
   const deleteContact = (id, contacts) => {
     contactService
-      .remove(id, contacts)
+      .remove(id, contacts, setErrorNotification, setDeleteNotification, timeout)
 
-      setDeleteNotification(contacts.name + " deleteth from the phonebook of terror")
-      setTimeout(() => {
-        setDeleteNotification(null)
-        window.location.reload(); // really sorry about this... I am a retard. :(
-      }, timeout)
     console.log("After DELETE: ", id, contacts)
   }
 

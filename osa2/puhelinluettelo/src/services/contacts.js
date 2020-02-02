@@ -15,10 +15,30 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-const remove = (id, contact) => {
-  let result = window.confirm("Are you really sure you want to delete '" + contact.name + "'\n...with really old-school CGI-kinda way?!?!?!?!");
+const remove = (id, contact, setErrorNotification, setDeleteNotification, timeout) => {
+  let result = window.confirm(timeout + ": Are you really sure you want to delete '" + contact.name + "'\n...with really old-school CGI-kinda way?!?!?!?!");
   if (result === true) {
-    axios.delete(`${baseUrl}/${id}`)
+
+    const request = axios.delete(`${baseUrl}/${id}`).then((res) => {
+      setDeleteNotification(contact.name + " deleteth from the phonebook of terror")
+      setTimeout(() => {
+        setDeleteNotification(null)
+        window.location.reload(); // really sorry about this... I am a retard. :(
+      }, timeout)
+
+      console.log("In here I should probably place some awesome action-thingy...")
+      
+    })
+      .catch(function (error) {
+        setErrorNotification(contact.name + " has already been deleted from the phonebook")
+        setTimeout(() => {
+          setErrorNotification(null)
+          window.location.reload(); // really sorry about this... I am a retard. :(
+        }, timeout)
+        
+      });
+
+
   }
 }
 
