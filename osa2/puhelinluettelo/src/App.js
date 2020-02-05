@@ -68,7 +68,7 @@ const App = (props) => {
       contactService
         .create(numObject)
         .then(response => {
-          console.log("numObject", numObject)
+          console.log("numObject", response)
           setContact(contacts.concat(response))
           setnewName('')
           setnewNumber('')
@@ -78,6 +78,12 @@ const App = (props) => {
             setNotification(null)
           }, timeout)
         })
+        .catch((response) => {
+          setErrorNotification("You tried to add '" + newName + "' which had insufficient data (name and phonenumber is required)")
+          setTimeout(() => {
+            setErrorNotification(null)
+          }, timeout)
+          })
     }
 
 
